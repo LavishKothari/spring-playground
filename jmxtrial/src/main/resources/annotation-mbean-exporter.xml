@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--look at https://stackoverflow.com/a/12389411/2346131 -->
+
+    <bean id="server" class="org.springframework.jmx.support.MBeanServerFactoryBean"/>
+
+    <bean id="exporter" class="org.springframework.jmx.export.annotation.AnnotationMBeanExporter" lazy-init="false">
+        <property name="server" ref="server"/>
+
+    </bean>
+
+    <bean id="personBean" class="com.jmx.trial.dummybeans.ManagedPerson" lazy-init="true">
+        <property name="name" value="Lavish"/>
+        <property name="age" value="25"/>
+    </bean>
+
+</beans>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--look at https://stackoverflow.com/a/12389411/2346131 -->
+
+    <bean id="server" class="org.springframework.jmx.support.MBeanServerFactoryBean"/>
+
+    <bean id="assembler" class="org.springframework.jmx.export.assembler.MetadataMBeanInfoAssembler">
+        <property name="attributeSource">
+            <bean class="org.springframework.jmx.export.annotation.AnnotationJmxAttributeSource"/>
+        </property>
+    </bean>
+
+    <bean id="namingStrategy" class="org.springframework.jmx.export.naming.MetadataNamingStrategy">
+        <property name="attributeSource" ref="attributeSource"/>
+    </bean>
+
+    <bean id="attributeSource"
+          class="org.springframework.jmx.export.annotation.AnnotationJmxAttributeSource"/>
+
+    <bean id="exporter" class="org.springframework.jmx.export.MBeanExporter" lazy-init="false">
+        <property name="server" ref="server"/>
+
+        <!--All the follwoing three properties are provided by AnnotationMBeanExporter-->
+        <property name="autodetect" value="true"/>
+        <property name="assembler" ref="assembler"/>
+        <property name="namingStrategy" ref="namingStrategy"/>
+    </bean>
+
+    <bean id="personBean" class="com.jmx.trial.dummybeans.ManagedPerson" lazy-init="true">
+        <property name="name" value="Lavish"/>
+        <property name="age" value="25"/>
+    </bean>
+
+</beans>

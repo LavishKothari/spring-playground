@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
+
+<beans>
+
+    <bean id="server" class="org.springframework.jmx.support.MBeanServerFactoryBean"/>
+
+    <bean id="exporter" class="org.springframework.jmx.export.MBeanExporter">
+        <property name="server" ref="server"/>
+        <property name="beans">
+            <map>
+                <entry key="com.mybean:name=testBean1" value-ref="beanWithoutInterface"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean name="beanWithoutInterface" class="com.jmx.trial.dummybeans.BeanWithoutInterface">
+        <property name="name" value="Lavish"/>
+    </bean>
+
+</beans>
